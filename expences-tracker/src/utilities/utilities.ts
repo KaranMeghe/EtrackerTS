@@ -19,3 +19,5 @@ export const Expences: ExpencesList[] = [
   { id: 'e9', description: 'Phone Bill', category: 'Utilities', amount: 80 },
   { id: 'e10', description: 'Dinner', category: 'Food', amount: 90 },
 ];
+
+export const Categories: string[] = ['Food', 'Utilities', 'Health', 'Entertainment', 'Transportation', 'Education'];
