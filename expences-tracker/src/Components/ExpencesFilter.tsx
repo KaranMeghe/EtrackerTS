@@ -13,9 +13,7 @@ const ExpencesFilter: React.FC<FILTERCATEGORIES> = ({ Categories, onSelectCatego
       className='form-select my-5'
       aria-label='Default select example'
       onChange={(event) => onSelectCategory(event.target.value)}>
-      <option value='' selected>
-        All Categories
-      </option>
+      <option value=''>All Categories</option>
       {Categories.map((cat) => {
         return (
           <option value={cat} key={cat}>

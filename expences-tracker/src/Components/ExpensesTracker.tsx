@@ -23,8 +23,8 @@ const ExpensesTracker: React.FC = () => {
 
   return (
     <>
-      <ExpencesForm Categories={Categories} />
-      <ExpencesFilter Categories={Categories} onSelectCategory={(category) => setSelectedCategories(category)} />
+      <ExpencesForm Categories={[...Categories]} />
+      <ExpencesFilter Categories={[...Categories]} onSelectCategory={(category) => setSelectedCategories(category)} />
       {expenses.length > 0 && <ExpencesList expenses={visibleCategoryExpenses} onDelete={handleOnDelete} />}
     </>
   );
