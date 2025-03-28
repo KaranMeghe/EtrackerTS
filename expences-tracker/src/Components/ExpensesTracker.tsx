@@ -10,7 +10,7 @@ const ExpensesTracker: React.FC = () => {
   const [expenses, setExpenses] = useState(Expences);
   const [selectedCategories, setSelectedCategories] = useState('');
 
-  const handleOnDelete = (id: string) => {
+  const handleOnDelete = (id: number) => {
     const updatedList = expenses.filter((expense) => {
       return expense.id !== id;
     });
@@ -23,7 +23,10 @@ const ExpensesTracker: React.FC = () => {
 
   return (
     <>
-      <ExpencesForm Categories={[...Categories]} />
+      <ExpencesForm
+        Categories={[...Categories]}
+        onSubmit={(expense) => setExpenses([...expenses, { ...expense, id: expenses.length + 1 }])}
+      />
       <ExpencesFilter Categories={[...Categories]} onSelectCategory={(category) => setSelectedCategories(category)} />
       {expenses.length > 0 && <ExpencesList expenses={visibleCategoryExpenses} onDelete={handleOnDelete} />}
     </>

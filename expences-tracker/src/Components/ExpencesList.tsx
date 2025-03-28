@@ -2,7 +2,7 @@
 import React from 'react';
 
 interface EXPENCES {
-  id: string;
+  id: number;
   description: string;
   category: string;
   amount: number;
@@ -10,7 +10,7 @@ interface EXPENCES {
 
 interface EXPENCESLISTPROPS {
   expenses: EXPENCES[];
-  onDelete: (id: string) => void;
+  onDelete: (id: number) => void;
 }
 
 const ExpencesList: React.FC<EXPENCESLISTPROPS> = ({ expenses, onDelete }) => {

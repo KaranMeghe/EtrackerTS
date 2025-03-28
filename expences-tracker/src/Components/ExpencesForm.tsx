@@ -1,38 +1,42 @@
 /** @format */
 
 import { z } from 'zod';
-import { Categories } from '../utilities/utilities';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-interface CATEGORIES {
-  Categories: string[];
-}
+// ✅ Fix: Define Categories as a constant tuple
+export const CategoriesTuple = ['Food', 'Utilities', 'Health', 'Entertainment', 'Transportation', 'Education'] as const;
 
 const schema = z.object({
   description: z
     .string()
-    .min(3, { message: 'Description should be at least 3 charaters' })
-    .max(16, { message: 'Description should be maximum 16 charaters' }),
-  amount: z.number({ invalid_type_error: 'Amount is required' }).min(0.1).max(1000_00),
-  category: z.enum(Categories, {
-    errorMap: () => ({
-      message: 'Category is required',
-    }),
-  }),
+    .min(3, { message: 'Description should be at least 3 characters' })
+    .max(16, { message: 'Description should be maximum 16 characters' }),
+  amount: z.number({ invalid_type_error: 'Amount is required' }).min(0.1).max(100000),
+  category: z.enum(CategoriesTuple, { errorMap: () => ({ message: 'Category is required' }) }),
 });
 
 type ExpensesFormData = z.infer<typeof schema>;
 
-const ExpencesForm: React.FC<CATEGORIES> = ({ Categories }) => {
+interface ExpencesFormProps {
+  Categories: readonly string[];
+  onSubmit: (data: ExpensesFormData) => void;
+}
+
+const ExpencesForm: React.FC<ExpencesFormProps> = ({ Categories, onSubmit }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<ExpensesFormData>({ resolver: zodResolver(schema) });
 
   return (
-    <form onSubmit={handleSubmit((data) => console.log(data))}>
+    <form
+      onSubmit={handleSubmit((data) => {
+        onSubmit(data);
+        reset();
+      })}>
       <div className='mb-3'>
         <label htmlFor='description' className='form-label'>
           Description
@@ -53,15 +57,13 @@ const ExpencesForm: React.FC<CATEGORIES> = ({ Categories }) => {
         <label htmlFor='category' className='form-label'>
           Category
         </label>
-        <select {...register('category')} name='' id='category' className='form-select'>
-          <option value=''></option>
-          {Categories.map((category) => {
-            return (
-              <option value={category} key={category}>
-                {category}
-              </option>
-            );
-          })}
+        <select {...register('category')} id='category' className='form-select'>
+          <option value=''>Select Category</option>
+          {Categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
         </select>
         {errors.category && <p className='text-danger my-1'>{errors.category.message}</p>}
       </div>
